@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Evidence vault – GigGuard{% endblock %}
+{% block content %}
+<main id="vault" class="view on">
+ <h2>Evidence vault</h2>
+ <p class="muted">Keep contracts, chat screenshots and invoices for each deal. Allowed: PDF, PNG, JPG, DOCX, TXT (max 10 MB).</p>
+ <form class="card up-grid" method="post" action="{{ url_for('vault_upload') }}" enctype="multipart/form-data">
+  <div class="wide"><label for="f">File</label><input id="f" type="file" name="file" required accept=".pdf,.png,.jpg,.jpeg,.docx,.txt"></div>
+  <div><label for="t">Type</label><select id="t" name="file_type">{% for t in types %}<option>{{ t }}</option>{% endfor %}</select></div>
+  <div><label for="o">Linked deal (optional)</label><select id="o" name="offer_id"><option value="">None</option>{% for o in offers %}<option value="{{ o.offer_id }}">{{ o.title }}</option>{% endfor %}</select></div>
+  <div><button class="btn" style="width:100%">Upload</button></div>
+ </form>
+
+ <div class="card" style="margin-top:18px;overflow-x:auto">
+  {% if files %}
+  <table class="rt"><tr><th>File</th><th>Linked deal</th><th>Type</th><th>Added</th><th></th></tr>
+  {% for f in files %}
+  <tr><td data-label="File">{{ f.file_name }}</td><td data-label="Linked deal">{{ f.title or '—' }}</td><td data-label="Type">{{ f.file_type }}</td><td data-label="Added">{{ f.uploaded_at.strftime('%d %b %Y') }}</td>
+   <td style="white-space:nowrap"><a href="{{ url_for('vault_download', evidence_id=f.evidence_id) }}">Download</a>
+    <form method="post" action="{{ url_for('vault_delete', evidence_id=f.evidence_id) }}" style="display:inline" onsubmit="return confirm('Delete this file?')"> · <button class="linkbtn">Delete</button></form></td></tr>
+  {% endfor %}</table>
+  {% else %}<p class="muted" style="margin:0">No evidence yet. Upload your first file above.</p>{% endif %}
+ </div>
+</main>
+{% endblock %}

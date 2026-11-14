@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin – GigGuard{% endblock %}
+{% block content %}
+<main id="admin" class="view on">
+ <h2>Admin</h2>
+ <div class="subnav"><a class="on" href="{{ url_for('admin') }}">Risk rules</a><a href="{{ url_for('admin_patterns') }}">Reported patterns</a></div>
+ <p class="muted">These rules decide the Offer risk score. A rule matches when any of its words or phrases (separated by <b>|</b>) appears in an offer. Changes apply to the next analysis.</p>
+
+ <details class="card" style="margin:20px 0">
+  <summary style="cursor:pointer;font-weight:600">Add a new rule</summary>
+  <form method="post" action="{{ url_for('admin_add_rule') }}" class="rule-grid" style="margin-top:14px">
+   <div><label for="n0">Rule name</label><input id="n0" name="rule_name" required maxlength="100"></div>
+   <div><label for="p0">Pattern</label><input id="p0" name="pattern" required maxlength="500" placeholder="gift card|bitcoin|western union"></div>
+   <div><label for="w0">Weight (1-100)</label><input id="w0" name="weight" type="number" min="1" max="100" required></div>
+   <div class="wide"><label for="e0">Explanation shown to the user</label><input id="e0" name="explanation" maxlength="255"></div>
+   <div class="wide"><button class="btn">Add rule</button></div>
+  </form>
+ </details>
+
+ {% for r in rules %}
+ <div class="card rule{% if not r.is_active %} off{% endif %}">
+  <form method="post" action="{{ url_for('admin_update_rule', rule_id=r.rule_id) }}" class="rule-grid">
+   <div><label for="n{{ r.rule_id }}">Rule name</label><input id="n{{ r.rule_id }}" name="rule_name" value="{{ r.rule_name }}" required maxlength="100"></div>
+   <div><label for="p{{ r.rule_id }}">Pattern</label><input id="p{{ r.rule_id }}" name="pattern" value="{{ r.pattern }}" required maxlength="500"></div>
+   <div><label for="w{{ r.rule_id }}">Weight</label><input id="w{{ r.rule_id }}" name="weight" type="number" min="1" max="100" value="{{ r.weight }}" required></div>
+   <div class="wide"><label for="e{{ r.rule_id }}">Explanation</label><input id="e{{ r.rule_id }}" name="explanation" value="{{ r.explanation or '' }}" maxlength="255"></div>
+   <div class="wide rule-actions">
+    <label class="check"><input type="checkbox" name="is_active" {% if r.is_active %}checked{% endif %}> Active</label>
+    <button class="btn">Save</button>
+   </div>
+  </form>
+  <form method="post" action="{{ url_for('admin_delete_rule', rule_id=r.rule_id) }}" onsubmit="return confirm('Delete this rule?')" style="margin-top:8px">
+   <button class="btn o">Delete</button>
+  </form>
+ </div>
+ {% else %}
+ <div class="card"><p class="muted" style="margin:0">No rules yet. Add your first rule above.</p></div>
+ {% endfor %}
+</main>
+{% endblock %}
