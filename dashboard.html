@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My reports – GigGuard{% endblock %}
+{% block content %}
+<main id="dashboard" class="view on">
+ <h2>My reports</h2>
+ <div class="stats">
+  <div class="card"><b>{{ stats.total }}</b>Analyses saved</div>
+  <div class="card"><b class="warn">{{ stats.avg }}</b>Average offer risk</div>
+  <div class="card"><b class="bad">{{ stats.high }}</b>High-risk offers</div>
+  <div class="card"><b>{{ stats.evidence }}</b>Evidence files</div>
+ </div>
+ {% if reports %}
+ <div class="charts"><div class="card"><h3>Offer risk over time</h3><canvas id="c1x" height="150"></canvas></div><div class="card"><h3>Risk levels</h3><canvas id="c2x"></canvas></div></div>
+ <div class="card" style="overflow-x:auto"><h3>Saved reports</h3>
+  <table class="rt"><tr><th>Offer</th><th>Date</th><th>Offer risk</th><th>Deal readiness</th><th>Result</th><th>Checklist</th></tr>
+  {% for r in reports %}
+  <tr><td data-label="Offer"><a href="{{ url_for('report_detail', assessment_id=r.assessment_id) }}">{{ r.title }}</a></td><td data-label="Date">{{ r.created_at.strftime('%d %b %Y') }}</td><td data-label="Offer risk">{{ r.risk_score }}</td><td data-label="Deal readiness">{{ r.readiness_score }}</td>
+   <td data-label="Result" class="{{ {'High':'bad','Medium':'warn','Low':'ok'}[r.risk_level] }}">{{ r.risk_level }} risk</td><td data-label="Checklist">{{ r.done_items }}/{{ r.total_items }}</td></tr>
+  {% endfor %}</table></div>
+ {% else %}
+ <div class="card"><h3>No reports yet</h3><p class="muted">Analyze your first job offer and it will be saved here.</p><a class="btn" href="{{ url_for('analyze') }}">Analyze a deal</a></div>
+ {% endif %}
+</main>
+<script>window.DASH = {{ chart|tojson }};</script>
+{% endblock %}

@@ -12,8 +12,8 @@
     <h1 class="h-title">Check the deal <em>before</em> you take the job.</h1>
     <p class="h-sub">Paste an offer and its payment terms. GigGuard shows what looks risky, why it matters, and what to confirm before you start work.</p>
     <div class="h-btns">
-     <a class="h-btn" href="{{ url_for('analyze') }}">Analyze an offer</a>
-     {% if not session.get('user_id') %}<a class="h-btn g" href="{{ url_for('login') }}">Create free account</a>{% endif %}
+     <a class="h-btn" href="#try">Try a free check</a>
+     {% if not session.get('user_id') %}<a class="h-btn g" href="{{ url_for('login') }}">Create free account</a>{% else %}<a class="h-btn g" href="{{ url_for('analyze') }}">Open the full tools</a>{% endif %}
     </div>
     <p class="h-note">Guidance for freelancers. It cannot guarantee that a job is safe.</p>
    </div>
@@ -36,6 +36,18 @@
   </div>
  </section>
 
+
+ <section class="h-sec" id="try"><div class="h-wrap">
+  <h2 class="rv">Paste an offer. Get an answer in seconds.</h2>
+  <div class="h-glass h-try rv" id="qc" data-login="{{ url_for('login') }}">
+   <label for="qc-text">Job offer or client message</label>
+   <textarea id="qc-text" maxlength="5000" placeholder="Example: Join us on Telegram. Pay a registration fee of $20 first, then start work today."></textarea>
+   <button type="button" class="h-btn" id="qc-run">Check this offer</button>
+   <p class="h-note" style="margin:12px 0 0">Free, no account needed. We do not save what you paste here.</p>
+   <div id="qc-out" class="h-out meter"></div>
+  </div>
+ </div></section>
+
  <section class="h-sec"><div class="h-wrap">
   <h2 class="rv">Three steps between you and a bad deal.</h2>
   <div class="h-steps">
@@ -57,9 +69,42 @@
   </div>
  </div></section>
 
+
+ <section class="h-sec"><div class="h-wrap">
+  <h2 class="rv">Not just a score. You see why.</h2>
+  <div class="h-glass rv h-example">
+   <p class="muted" style="margin:0 0 14px">Example result (made-up offer)</p>
+   <div class="h-cols">
+    <div><h3><span class="h-dot bad"></span>Concerns</h3><p>Asks you to pay a fee before work starts. Real clients do not charge freelancers to begin.</p></div>
+    <div><h3><span class="h-dot ok"></span>Reassuring</h3><p>A payment amount and a deadline are written in the offer.</p></div>
+    <div><h3><span class="h-dot unk"></span>Not checked</h3><p>We cannot confirm who the client really is. Use the Client check.</p></div>
+   </div>
+   <p class="h-next"><b>Next step:</b> do not pay anything. Ask for a paid milestone and verify the company first.</p>
+  </div>
+ </div></section>
+
+ <section class="h-sec"><div class="h-wrap">
+  <h2 class="rv">How the score works.</h2>
+  <div class="h-steps">
+   <div class="h-glass rv"><h3>Clear rules</h3><p>Every warning comes from a written rule with a weight. The same offer always gets the same score.</p></div>
+   <div class="h-glass rv"><h3>Kept up to date</h3><p>An admin reviews reports from freelancers and turns real scam patterns into new rules.</p></div>
+   <div class="h-glass rv"><h3>Honest limits</h3><p>A low score means no known warning signs were found. It never means a deal is guaranteed safe.</p></div>
+  </div>
+ </div></section>
+
+ <section class="h-sec"><div class="h-wrap">
+  <h2 class="rv">Questions freelancers ask.</h2>
+  <div class="h-faq rv">
+   <details class="h-glass"><summary>Do I need an account?</summary><p>No, the quick check on this page is free. An account lets you save reports, tick your checklist and keep evidence in one place.</p></details>
+   <details class="h-glass"><summary>Is my offer text stored?</summary><p>Not in the quick check. In your account, analyses are saved only to your own reports and only you can see them.</p></details>
+   <details class="h-glass"><summary>Can GigGuard guarantee a job is safe?</summary><p>No. It shows warning signs and what to verify. The final decision is always yours.</p></details>
+   <details class="h-glass"><summary>What if a client asks me to pay first?</summary><p>Treat it as a major red flag. Do not send money to get work, and keep every message as proof.</p></details>
+  </div>
+ </div></section>
+
  <section class="h-cta"><div class="h-wrap">
   <h2 class="rv">Got an offer on your screen right now?</h2>
-  <div class="rv"><a class="h-btn" href="{{ url_for('analyze') }}">Check it in a minute</a></div>
+  <div class="rv"><a class="h-btn" href="#try">Check it in a minute</a></div>
  </div></section>
 </main>
 <script>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Analyze a deal – GigGuard{% endblock %}
+{% block content %}
+<main id="analyze" class="view on">
+ <h2>Analyze a deal</h2>
+ <p class="muted">Choose a check. Results appear on the right.</p>
+ <div class="tabs" role="tablist" id="tabs"></div>
+ <div class="work">
+  <div class="card" id="forms">
+   <div class="pane on" data-t="offer"><label>Job offer text</label><textarea id="o1" placeholder="Paste the job post or client message"></textarea><label>Payment terms</label><textarea id="o2" placeholder="e.g. Pay after approval, 50% advance..."></textarea></div>
+   <div class="pane" data-t="contract"><label>Contract text</label><textarea id="c1" style="min-height:260px" placeholder="Paste your contract or agreement"></textarea></div>
+   <div class="pane" data-t="scope"><label>Original project requirements</label><textarea id="s1"></textarea><label>New request from client</label><textarea id="s2"></textarea></div>
+   <div class="pane" data-t="exposure"><label>Total project value ($)</label><input id="x1" type="number" min="0"><label>Work completed (%)</label><input id="x2" type="number" min="0" max="100"><label>Amount already paid ($)</label><input id="x3" type="number" min="0"></div>
+   <div class="pane" data-t="client"><label>Client name</label><input id="k1"><label>Company they claim</label><input id="k2"><label>Contact email</label><input id="k3" type="email"><label>Company website (if any)</label><input id="k4"><label>Client profile age (months)</label><input id="k5" type="number" min="0"></div>
+   <button class="btn" style="margin-top:20px" id="run">Run analysis</button>
+  </div>
+  <div class="card meter" id="out"><p class="muted" style="margin:40px 0">Your results will show here. Run an analysis to see the score and the reasons behind it.</p></div>
+ </div>
+</main>
+{% endblock %}
